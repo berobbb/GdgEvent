@@ -1,20 +1,29 @@
-import { Search, ShoppingCart } from 'lucide-react';
+import { Search, ShoppingCart } from "lucide-react";
+import { NavLink } from "react-router";
 
 export default function Navbar() {
   return (
     <nav className="bg-black text-white p-4">
       <div className="container mx-auto flex items-center justify-between">
-      
         <div className="flex items-center gap-6">
-          <a href="#" className="text-xl font-bold">GdgMovie</a>
+          <NavLink to="/">
+            <a href="#" className="text-xl font-bold">
+              GdgMovie
+            </a>
+          </NavLink>
           <div className="hidden md:flex space-x-4">
-            <a href="#" className="hover:text-gray-300">Home</a>
-            <a href="#" className="hover:text-gray-300">Categories</a>
-            <a href="#" className="hover:text-gray-300">Top Rated</a>
+            <a href="#" className="hover:text-gray-300">
+              Home
+            </a>
+            <a href="#" className="hover:text-gray-300">
+              Categories
+            </a>
+            <a href="#" className="hover:text-gray-300">
+              Top Rated
+            </a>
           </div>
         </div>
 
-     
         <div className="flex items-center space-x-4">
           <div className="relative">
             <input
@@ -27,10 +36,11 @@ export default function Navbar() {
               size={20}
             />
           </div>
-          <button className="relative bg-transparent hover:text-gray-300 p-2">
-            <ShoppingCart className="h-6 w-6" />
-            
-          </button>
+          <NavLink to="/cart">
+            <button className="relative bg-transparent hover:text-gray-300 p-2">
+              <ShoppingCart className="h-6 w-6" />
+            </button>
+          </NavLink>
         </div>
       </div>
     </nav>
