@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MovieList() {
+export default function MovieList({addToCart}) {
     const movies = [
       {
         id: 1,
@@ -48,7 +48,9 @@ export default function MovieList() {
                   <h2 className="text-lg font-semibold">{movie.name}</h2>
                   <p className="text-gray-400">Rating: {movie.rating}/10</p>
                   <div className="mt-4 flex justify-between items-center">
-                    <button className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                    <button 
+                    onClick={() => addToCart(movie)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
                       Add to Cart
                     </button>
                   </div>
