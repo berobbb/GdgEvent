@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
 export default function MovieList({addToCart}) {
     const [movies, setMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         const fetchMovies = async () => {
             try {
@@ -22,13 +20,17 @@ export default function MovieList({addToCart}) {
                 
                 const data = await response.json();
                 
+                // Transform the API response to match our expected movie structure
                 const transformedMovies = data.data.movies.edges.map((edge, index) => ({
                     id: edge.node.id || `movie-${index}`,
                     name: edge.node.titleText?.text || 'Unknown Title',
                     rating: edge.node.ratingsSummary?.aggregateRating || 0,
-                    image: edge.node.primaryImage?.url || '/images/placeholder.png'
+                    image: edge.node.primaryImage?.url || '/images/placeholder.png',
+                    // Extract genres and store them
+                    genres: edge.node.titleGenres?.genres 
+                        ? edge.node.titleGenres.genres.map(g => g.genre.text) 
+                        : []
                 }));
-
                 setMovies(transformedMovies);
                 setIsLoading(false);
             } catch (err) {
@@ -36,10 +38,8 @@ export default function MovieList({addToCart}) {
                 setIsLoading(false);
             }
         };
-
         fetchMovies();
     }, []);
-
     if (isLoading) {
         return (
             <div className="p-6 text-white min-h-screen mt-10 text-center">
@@ -47,7 +47,6 @@ export default function MovieList({addToCart}) {
             </div>
         );
     }
-
     if (error) {
         return (
             <div className="p-6 text-white min-h-screen mt-10 text-center">
@@ -65,7 +64,6 @@ export default function MovieList({addToCart}) {
               key={movie.id}
               className="relative group rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:z-10"
             >
-              
               <div className="relative bg-black text-white rounded-lg shadow-lg border-2 border-yellow-500 hover:border-yellow-400">
                 <img
                   src={movie.image}
@@ -75,10 +73,24 @@ export default function MovieList({addToCart}) {
                 <div className="p-4">
                   <h2 className="text-lg font-semibold">{movie.name}</h2>
                   <p className="text-gray-400">Rating: {movie.rating}/10</p>
+                  
+                  {/* Genres Section */}
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {movie.genres.map((genre, index) => (
+                      <span 
+                        key={index} 
+                        className="px-2 py-1 text-xs bg-gray-800 border border-gray-600 rounded-full"
+                      >
+                        {genre}
+                      </span>
+                    ))}
+                  </div>
+                  
                   <div className="mt-4 flex justify-between items-center">
                     <button 
-                    onClick={() => addToCart(movie)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                      onClick={() => addToCart(movie)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600"
+                    >
                       Add to Cart
                     </button>
                   </div>
