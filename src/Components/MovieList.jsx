@@ -20,13 +20,11 @@ export default function MovieList({addToCart}) {
                 
                 const data = await response.json();
                 
-                // Transform the API response to match our expected movie structure
                 const transformedMovies = data.data.movies.edges.map((edge, index) => ({
                     id: edge.node.id || `movie-${index}`,
                     name: edge.node.titleText?.text || 'Unknown Title',
                     rating: edge.node.ratingsSummary?.aggregateRating || 0,
-                    image: edge.node.primaryImage?.url || '/images/placeholder.png',
-                    // Extract genres and store them
+                    image: edge.node.primaryImage?.url || '/images/Dark.png',
                     genres: edge.node.titleGenres?.genres 
                         ? edge.node.titleGenres.genres.map(g => g.genre.text) 
                         : []
