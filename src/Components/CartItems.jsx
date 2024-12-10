@@ -15,7 +15,7 @@ export default function CartItems({ cart, removeFromCart }) {
                 <img
                   src={movie.image}
                   alt={movie.name}
-                  className="w-full h-56 object-cover rounded-t-lg"
+                  className="w-full h-56 object-contain rounded-t-lg"
                 />
                 <div className="p-4">
                   <h2 className="text-lg font-semibold">{movie.name}</h2>
