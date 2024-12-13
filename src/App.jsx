@@ -20,14 +20,36 @@ export default function App() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (movie) => {
+  const addToCart = async (movie) => {
     const movieInCart = cart.find((item) => item.id === movie.id);
   
     if (movieInCart) {
       toast.error('Item is already in the cart.');
     } else {
-      setCart([...cart, movie]);
-      toast.success('Item added to the cart.');
+      try {
+        setCart([...cart, movie]);
+        toast.success('Item added to the cart.');
+  
+        const response = await fetch('http://127.0.0.1:5000/recommend', { //POST request to the /recommend endpoint
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: movie.name,  // movie name for recommendations
+            top_n: 5,       
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendations.');
+        }
+        const recommendedMovies = await response.json();
+        console.log('Recommended Movies:', recommendedMovies);
+      } catch (error) {
+        console.error('Error while fetching recommendations:', error);
+        toast.error('Failed to fetch recommendations.');
+      }
     }
   };
   
