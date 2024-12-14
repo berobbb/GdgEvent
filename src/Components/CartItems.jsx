@@ -35,7 +35,7 @@ export default function CartItems({ cart, removeFromCart }) {
                 
                 <div className="mt-4 flex justify-between items-center">
                   <button 
-                    onClick={() => addToCart(movie)}
+                    onClick={() => removeFromCart(movie.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
                   >
                     Remove

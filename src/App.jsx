@@ -54,7 +54,7 @@ export default function App() {
   };
   
   const removeFromCart = (movieId) => {
-    const movieInCart = cart.find((movie) => movie.id === movieId);
+    const movieInCart = cart.find((movie) => movie.id == movieId);
   
     if (movieInCart) {
       setCart(cart.filter((movie) => movie.id !== movieId));
