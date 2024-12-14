@@ -76,7 +76,8 @@ export default function App() {
   // Function to remove a movie from the cart
   const removeFromCart = (movieId) => {
     // Find the movie in the cart
-    const movieInCart = cart.find((movie) => movie.id === movieId);
+    const movieInCart = cart.find((movie) => movie.id == movieId);
+
   
     if (movieInCart) {
       // Remove the movie from cart
