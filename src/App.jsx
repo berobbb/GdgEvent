@@ -7,6 +7,7 @@ import Footer from "./Components/Footer";
 import toast from 'react-hot-toast';
 import CartItems from "./Components/CartItems";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { RecommendedItems } from "./Components/RecommendedItems";
 
 export default function App() {
 
@@ -15,6 +16,8 @@ export default function App() {
     return storedCart ? JSON.parse(storedCart) : [];
   });
 
+  const [recMovies, setRecMovies] = useState([]);
+
   // sync state
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -22,7 +25,7 @@ export default function App() {
 
   const addToCart = async (movie) => {
     const movieInCart = cart.find((item) => item.id === movie.id);
-  
+
     if (movieInCart) {
       toast.error('Item is already in the cart.');
     } else {
@@ -44,7 +47,10 @@ export default function App() {
         if (!response.ok) {
           throw new Error('Failed to fetch recommendations.');
         }
+
         const recommendedMovies = await response.json();
+        console.log('Recommended Movies:', recommendedMovies);
+        setRecMovies(recommendedMovies);
         console.log('Recommended Movies:', recommendedMovies);
       } catch (error) {
         console.error('Error while fetching recommendations:', error);
@@ -75,6 +81,10 @@ export default function App() {
             element={
               <>
                 <Hero />
+                {recMovies.length > 0 && (
+                  <RecommendedItems movies={recMovies}/>
+                )}
+                
                 <MovieList addToCart={addToCart}/>
               </>
             }
