@@ -21,14 +21,15 @@ export default function MovieList({addToCart}) {
                 const data = await response.json();
                 
                 const transformedMovies = data.data.movies.edges.map((edge, index) => ({
-                    id: edge.node.id || `movie-${index}`,
-                    name: edge.node.titleText?.text || 'Unknown Title',
-                    rating: edge.node.ratingsSummary?.aggregateRating || 0,
-                    image: edge.node.primaryImage?.url || '/images/Dark.png',
-                    genres: edge.node.titleGenres?.genres 
-                        ? edge.node.titleGenres.genres.map(g => g.genre.text) 
-                        : []
+                  id: edge.node.id || `movie-${index}`,
+                  name: edge.node.titleText?.text || 'Unknown Title',
+                  rating: edge.node.ratingsSummary?.aggregateRating || 0,
+                  image: edge.node.primaryImage?.url || '/images/Dark.png',
+                  genres: edge.node.titleGenres?.genres 
+                      ? edge.node.titleGenres.genres.slice(0, 4).map(g => g.genre.text) 
+                      : []
                 }));
+
                 setMovies(transformedMovies);
                 setIsLoading(false);
             } catch (err) {
